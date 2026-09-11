@@ -1,7 +1,7 @@
 <div align="center">
 
 # 🚀 GitHub Achievement Unlocker & Hunter
-### *Autonomous CLI Tool & 1-Click GitHub Action to Unlock All GitHub Profile Badges*
+### *Autonomous CLI Tool & 1-Click GitHub Action to Unlock Individual Badges or the Full Suite*
 
 [![GitHub Stars](https://img.shields.io/github/stars/djabhi31/github-achievement-unlocker?style=for-the-badge&color=ffd700&logo=github)](https://github.com/djabhi31/github-achievement-unlocker/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/djabhi31/github-achievement-unlocker?style=for-the-badge&color=blue&logo=github)](https://github.com/djabhi31/github-achievement-unlocker/network/members)
@@ -9,15 +9,30 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
 <p align="center">
-  <b>Tired of having an empty GitHub Achievements section?</b><br>
-  Unlock <b>Quickdraw</b>, <b>Pull Shark</b>, <b>Pair Extraordinaire</b>, and <b>Galaxy Brain</b> (up to Diamond tier) with a single click or command!
+  <b>Want a specific badge or the complete collection?</b><br>
+  Unlock <b>Quickdraw</b>, <b>Pull Shark</b>, <b>Pair Extraordinaire</b>, <b>Galaxy Brain</b> (up to Diamond tier), or <b>YOLO</b> individually or all together with 1 click!
 </p>
 
-[🚀 Quick Start](#-quick-start-how-to-unlock) • [🎖️ Badges You Can Unlock](#️-badges-you-can-unlock) • [❓ FAQ](#-frequently-asked-questions-faq) • [⭐ Star This Project](#-support--star)
+[🎯 Select Individual Badges](#-unlock-individual-badges) • [🚀 Quick Start](#-quick-start) • [🎖️ Trophy Cabinet](#️-badges-you-can-unlock) • [⭐ Star This Project](#-support--star)
 
 ---
 
 </div>
+
+## 🎯 Unlock Individual Badges or All at Once!
+
+You have complete flexibility:
+
+| Badge Option | Target Achievement | What It Does | Supported Tiers |
+| :--- | :--- | :--- | :--- |
+| ⚡ **`quickdraw`** | **Quickdraw** | Creates and closes an issue in < 2 seconds | Standard |
+| 🧠 **`galaxy-brain`** | **Galaxy Brain** | Creates Q&A discussions & marks answers accepted | Bronze (x2), Silver (x8), **Diamond (x32)** |
+| 👥 **`pair-extraordinaire`** | **Pair Extraordinaire** | Merges co-authored pull requests | Bronze (x1), Silver (x10), **Gold (x24)** |
+| 🦈 **`pull-shark`** | **Pull Shark** | Merges multiple pull requests | Bronze (x2), Silver (x16), Max (x25+) |
+| 🚀 **`yolo`** | **YOLO** | Merges pull request without code review | Standard |
+| 👑 **`all`** | **ALL BADGES** | Unlocks the complete suite up to the maximum tiers | All Max Tiers |
+
+---
 
 ## 🎖️ Badges You Can Unlock
 
@@ -27,17 +42,17 @@
     <td align="center" width="20%">
       <img src="https://raw.githubusercontent.com/Schweinepriester/github-profile-achievements/main/images/galaxy-brain-default.png" width="95" alt="Galaxy Brain"/><br/>
       <b>Galaxy Brain</b><br/>
-      <sub><kbd>💎 DIAMOND TIER (x32)</kbd></sub>
+      <sub><kbd>💎 DIAMOND (x32)</kbd></sub>
     </td>
     <td align="center" width="20%">
       <img src="https://raw.githubusercontent.com/Schweinepriester/github-profile-achievements/main/images/pair-extraordinaire-default.png" width="95" alt="Pair Extraordinaire"/><br/>
       <b>Pair Extraordinaire</b><br/>
-      <sub><kbd>🥇 GOLD TIER (x24)</kbd></sub>
+      <sub><kbd>🥇 GOLD (x24)</kbd></sub>
     </td>
     <td align="center" width="20%">
       <img src="https://raw.githubusercontent.com/Schweinepriester/github-profile-achievements/main/images/pull-shark-default.png" width="95" alt="Pull Shark"/><br/>
       <b>Pull Shark</b><br/>
-      <sub><kbd>🥈 SILVER TIER (x16)</kbd></sub>
+      <sub><kbd>🥈 SILVER (x16)</kbd></sub>
     </td>
     <td align="center" width="20%">
       <img src="https://raw.githubusercontent.com/Schweinepriester/github-profile-achievements/main/images/quickdraw-default.png" width="95" alt="Quickdraw"/><br/>
@@ -55,61 +70,66 @@
 
 ---
 
-## 🚀 Quick Start: How to Unlock
-
-You can unlock all these achievements in **under 3 minutes** using either method:
+## 🚀 Quick Start: How to Run
 
 ### 🔹 Method 1: 1-Click GitHub Action *(Zero Installation)*
 
-1. **Fork this repository:** Click the [**Fork** button](https://github.com/djabhi31/github-achievement-unlocker/fork) at the top right of this page.
-2. Go to your forked repo's **Actions** tab.
-3. Click on **"🏆 1-Click GitHub Achievement Unlocker"** in the left sidebar.
-4. Click **Run workflow** -> select target tier (e.g. `max` for Diamond & Gold) -> Click **Run workflow**.
-5. Wait ~2 minutes for the workflow to complete.
+1. **Fork this repository:** Click the [**Fork** button](https://github.com/djabhi31/github-achievement-unlocker/fork) at the top right.
+2. Navigate to the **Actions** tab in your fork.
+3. Click on **"🏆 1-Click GitHub Achievement Unlocker"** on the left menu.
+4. Click **Run workflow**:
+   - **Select Badge:** Choose `all` OR pick a specific badge (e.g. `galaxy-brain`, `quickdraw`, etc.).
+   - **Target Tier:** Choose `max` (Diamond/Gold), `silver`, or `bronze`.
+5. Click **Run workflow** and wait ~1–2 minutes!
 6. Check your GitHub profile in 15–30 minutes!
 
-*(Note: For Galaxy Brain and full permissions, you can optionally add a PAT with `repo` scope under Settings -> Secrets and variables -> Actions as `PERSONAL_ACCESS_TOKEN`).*
+*(Note: For Galaxy Brain and organization discussions, you can optionally add a PAT with `repo` scope under Settings -> Secrets and variables -> Actions as `PERSONAL_ACCESS_TOKEN`).*
 
 ---
 
 ### 🔹 Method 2: Local Python CLI Tool
 
-Run it directly on your machine without installing any dependencies (uses standard Python library):
+Run directly on your terminal (no dependencies required, pure Python standard library):
 
 ```bash
 # 1. Clone this repository
 git clone https://github.com/djabhi31/github-achievement-unlocker.git
 cd github-achievement-unlocker
 
-# 2. Run the unlocker script
+# 2. Run interactively (will show a menu to pick your badge!)
 python unlocker.py
 ```
 
-The script will automatically detect your git credentials or prompt for your GitHub Token, create an isolated sandbox repository, and unlock all badges automatically!
+#### Interactive Menu Preview:
+```text
+Select which badge(s) you want to unlock:
+  [1] ⚡ Quickdraw (Instant issue closure)
+  [2] 🦈 Pull Shark (Merge PRs)
+  [3] 👥 Pair Extraordinaire (Co-authored PRs)
+  [4] 🧠 Galaxy Brain (Q&A discussions accepted answers)
+  [5] 🚀 YOLO (Direct PR merge without review)
+  [6] 👑 ALL BADGES (Complete Suite up to Diamond/Gold)
 
-#### CLI Flags:
-```bash
-# Unlock up to maximum Diamond & Gold tiers
-python unlocker.py --level max
-
-# Unlock up to Silver tiers
-python unlocker.py --level silver
-
-# Run in automated CI mode
-python unlocker.py --automated --level max --repo my-achievements-sandbox
+Enter choice [1-6] (default 6):
 ```
 
----
+#### Direct CLI Flags:
+```bash
+# Unlock ONLY Quickdraw:
+python unlocker.py --badge quickdraw
 
-## 📊 Criteria & Tiers Unlocked
+# Unlock ONLY Galaxy Brain (Diamond Tier):
+python unlocker.py --badge galaxy-brain --tier max
 
-| Badge | Highest Tier | Criteria Required | Tool Automation |
-| :--- | :--- | :--- | :--- |
-| 💎 **Galaxy Brain** | **Diamond (x32)** | 32 accepted answers in Q&A Discussions | GraphQL API creates 32 Q&A discussions & marks answers accepted. |
-| 🥇 **Pair Extraordinaire** | **Gold (x24)** | 24 co-authored merged pull requests | Automates 25 PRs with RFC-compliant co-authorship commit trailers. |
-| 🥈 **Pull Shark** | **Silver (x16)** | 16 merged pull requests | Automatically generates branches, files, and merges 27 PRs. |
-| ⚡ **Quickdraw** | **Standard** | Close issue/PR within 5 minutes | Opens an issue and closes it within < 2 seconds. |
-| 🚀 **YOLO** | **Standard** | Merge PR without review | Direct PR merge without review requirement. |
+# Unlock ONLY Pair Extraordinaire (Gold Tier):
+python unlocker.py --badge pair-extraordinaire --tier max
+
+# Unlock ONLY Pull Shark (Silver Tier):
+python unlocker.py --badge pull-shark --tier silver
+
+# Unlock ALL badges together:
+python unlocker.py --badge all --tier max
+```
 
 ---
 
@@ -118,25 +138,19 @@ python unlocker.py --automated --level max --repo my-achievements-sandbox
 <details>
 <summary><b>1. Will this affect my existing repositories?</b></summary>
 <br>
-No! The tool creates and uses a dedicated sandbox repository (e.g., <code>github-achievement-sandbox</code>). None of your existing repositories or code are touched.
+No! The tool creates and uses an isolated sandbox repository (default: <code>github-achievement-sandbox</code>). None of your personal or work repositories are modified.
 </details>
 
 <details>
-<summary><b>2. How long before badges appear on my profile?</b></summary>
+<summary><b>2. Can I unlock only one badge if I already have the others?</b></summary>
 <br>
-GitHub evaluates achievements asynchronously in background queues. Badges typically appear on your profile within <b>15 to 45 minutes</b>. Refresh your profile achievements page after some time.
+Yes! Use the <code>--badge &lt;name&gt;</code> flag or select the badge from the interactive menu. You can unlock exactly what you need without touching other badges.
 </details>
 
 <details>
-<summary><b>3. What should I do with the sandbox repository afterwards?</b></summary>
+<summary><b>3. How long before badges appear on my profile?</b></summary>
 <br>
-Do <b>not</b> delete it immediately! GitHub may revoke badges if the underlying repository is deleted before or during calculation. Best practice is to leave it public or <b>Archive</b> it once badges appear.
-</details>
-
-<details>
-<summary><b>4. How do I get the Starstruck badge?</b></summary>
-<br>
-The <b>Starstruck</b> badge requires 16 stars from other unique GitHub users on one of your repositories. By sharing this open-source tool with others, you can earn stars organically!
+GitHub evaluates achievements asynchronously in background workers. Badges typically appear on your profile within <b>15 to 45 minutes</b>.
 </details>
 
 ---

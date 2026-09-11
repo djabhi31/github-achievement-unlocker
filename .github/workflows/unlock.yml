@@ -1,0 +1,42 @@
+name: 🏆 1-Click GitHub Achievement Unlocker
+
+on:
+  workflow_dispatch:
+    inputs:
+      level:
+        description: 'Achievement Target Tier'
+        required: true
+        default: 'max'
+        type: choice
+        options:
+          - 'max'      # Gold Pair Extraordinaire (x24) + Diamond Galaxy Brain (x32)
+          - 'silver'   # Silver Pull Shark (x16) + Silver Galaxy Brain (x8)
+          - 'standard' # Quickdraw + Bronze badges
+      sandbox_repo:
+        description: 'Sandbox repo name to create/use'
+        required: true
+        default: 'my-github-achievements-sandbox'
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  discussions: write
+
+jobs:
+  unlock-achievements:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Toolkit
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Unlocker Engine
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          python unlocker.py --automated --level ${{ github.event.inputs.level }} --repo ${{ github.event.inputs.sandbox_repo }}

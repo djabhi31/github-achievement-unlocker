@@ -110,13 +110,12 @@ class AchievementUnlocker:
             print(f"    Created repository: {new_repo.get('html_url', repo_name)}")
             time.sleep(3)
 
-        # Enable discussions
         self.rest_request(f"/repos/{self.user}/{repo_name}", method="PATCH", data={"has_discussions": True})
         return repo_name
 
     def unlock_quickdraw(self, repo_name):
         print("\n" + "="*50)
-        print("⚡ [1/4] Unlocking QUICKDRAW Badge...")
+        print("⚡ Unlocking QUICKDRAW Badge...")
         print("="*50)
         issue = self.rest_request(f"/repos/{self.user}/{repo_name}/issues", method="POST", data={
             "title": "Quickdraw Achievement Verification",
@@ -128,51 +127,91 @@ class AchievementUnlocker:
         self.rest_request(f"/repos/{self.user}/{repo_name}/issues/{num}", method="PATCH", data={"state": "closed"})
         print(f"    Closed Issue #{num} instantly! [Quickdraw Unlocked!]")
 
-    def unlock_pull_and_pair(self, repo_name, pr_count=25):
+    def unlock_yolo(self, repo_name):
         print("\n" + "="*50)
-        print(f"🦈 [2/4] Unlocking PULL SHARK & 👥 [3/4] PAIR EXTRAORDINAIRE ({pr_count} PRs)...")
+        print("🚀 Unlocking YOLO Badge...")
         print("="*50)
+        main_ref = self.rest_request(f"/repos/{self.user}/{repo_name}/git/ref/heads/main")
+        main_sha = main_ref["object"]["sha"]
+        branch = f"yolo-{int(time.time() * 1000)}"
 
+        self.rest_request(f"/repos/{self.user}/{repo_name}/git/refs", method="POST", data={
+            "ref": f"refs/heads/{branch}", "sha": main_sha
+        })
+        content_b64 = base64.b64encode("YOLO commit".encode('utf-8')).decode('utf-8')
+        self.rest_request(f"/repos/{self.user}/{repo_name}/contents/yolo.txt", method="PUT", data={
+            "message": "Direct commit for YOLO badge", "content": content_b64, "branch": branch
+        })
+        pr = self.rest_request(f"/repos/{self.user}/{repo_name}/pulls", method="POST", data={
+            "title": "YOLO Achievement PR", "head": branch, "base": "main", "body": "PR merged without review."
+        })
+        pr_num = pr.get("number")
+        time.sleep(0.5)
+        self.rest_request(f"/repos/{self.user}/{repo_name}/pulls/{pr_num}/merge", method="PUT", data={
+            "commit_title": f"Merge pull request #{pr_num}", "merge_method": "merge"
+        })
+        print(f"    Merged PR #{pr_num} directly without code review! [YOLO Unlocked!]")
+
+    def unlock_pull_shark(self, repo_name, pr_count=16):
+        print("\n" + "="*50)
+        print(f"🦈 Unlocking PULL SHARK ({pr_count} PRs)...")
+        print("="*50)
         main_ref = self.rest_request(f"/repos/{self.user}/{repo_name}/git/ref/heads/main")
         main_sha = main_ref["object"]["sha"]
 
         for i in range(1, pr_count + 1):
-            branch = f"achieve-branch-{i}-{int(time.time() * 1000)}"
+            branch = f"pull-shark-{i}-{int(time.time() * 1000)}"
             self.rest_request(f"/repos/{self.user}/{repo_name}/git/refs", method="POST", data={
-                "ref": f"refs/heads/{branch}",
-                "sha": main_sha
+                "ref": f"refs/heads/{branch}", "sha": main_sha
             })
-
-            content_b64 = base64.b64encode(f"Milestone commit #{i}".encode('utf-8')).decode('utf-8')
-            commit_msg = f"Add milestone update #{i}\n\nCo-authored-by: octocat <octocat@github.com>"
-            self.rest_request(f"/repos/{self.user}/{repo_name}/contents/milestones/update_{i}.txt", method="PUT", data={
-                "message": commit_msg,
-                "content": content_b64,
-                "branch": branch
+            content_b64 = base64.b64encode(f"Shark commit #{i}".encode('utf-8')).decode('utf-8')
+            self.rest_request(f"/repos/{self.user}/{repo_name}/contents/shark/update_{i}.txt", method="PUT", data={
+                "message": f"Update #{i}", "content": content_b64, "branch": branch
             })
-
             pr = self.rest_request(f"/repos/{self.user}/{repo_name}/pulls", method="POST", data={
-                "title": f"Co-Authored Achievement PR #{i}",
-                "head": branch,
-                "base": "main",
-                "body": f"Milestone pull request #{i}."
+                "title": f"Pull Shark PR #{i}", "head": branch, "base": "main", "body": f"PR #{i}."
             })
             pr_num = pr.get("number")
-
             time.sleep(0.5)
-
             self.rest_request(f"/repos/{self.user}/{repo_name}/pulls/{pr_num}/merge", method="PUT", data={
-                "commit_title": f"Merge pull request #{pr_num}",
-                "merge_method": "merge"
+                "commit_title": f"Merge pull request #{pr_num}", "merge_method": "merge"
+            })
+            print(f"    [{i}/{pr_count}] Merged PR #{pr_num}")
+            time.sleep(0.5)
+        print("    [Pull Shark Unlocked!]")
+
+    def unlock_pair_extraordinaire(self, repo_name, pr_count=24):
+        print("\n" + "="*50)
+        print(f"👥 Unlocking PAIR EXTRAORDINAIRE ({pr_count} Co-Authored PRs)...")
+        print("="*50)
+        main_ref = self.rest_request(f"/repos/{self.user}/{repo_name}/git/ref/heads/main")
+        main_sha = main_ref["object"]["sha"]
+
+        for i in range(1, pr_count + 1):
+            branch = f"pair-branch-{i}-{int(time.time() * 1000)}"
+            self.rest_request(f"/repos/{self.user}/{repo_name}/git/refs", method="POST", data={
+                "ref": f"refs/heads/{branch}", "sha": main_sha
+            })
+            content_b64 = base64.b64encode(f"Pair commit #{i}".encode('utf-8')).decode('utf-8')
+            commit_msg = f"Add pair update #{i}\n\nCo-authored-by: octocat <octocat@github.com>"
+            self.rest_request(f"/repos/{self.user}/{repo_name}/contents/pairing/update_{i}.txt", method="PUT", data={
+                "message": commit_msg, "content": content_b64, "branch": branch
+            })
+            pr = self.rest_request(f"/repos/{self.user}/{repo_name}/pulls", method="POST", data={
+                "title": f"Pair Extraordinaire PR #{i}", "head": branch, "base": "main", "body": f"Co-authored PR #{i}."
+            })
+            pr_num = pr.get("number")
+            time.sleep(0.5)
+            self.rest_request(f"/repos/{self.user}/{repo_name}/pulls/{pr_num}/merge", method="PUT", data={
+                "commit_title": f"Merge pull request #{pr_num}", "merge_method": "merge"
             })
             print(f"    [{i}/{pr_count}] Merged Co-Authored PR #{pr_num}")
             time.sleep(0.5)
-
-        print("    [Pull Shark & Pair Extraordinaire Unlocked / Leveled Up!]")
+        print("    [Pair Extraordinaire Unlocked!]")
 
     def unlock_galaxy_brain(self, repo_name, count=32):
         print("\n" + "="*50)
-        print(f"💎 [4/4] Unlocking GALAXY BRAIN ({count} Accepted Q&A Answers)...")
+        print(f"💎 Unlocking GALAXY BRAIN ({count} Accepted Q&A Answers)...")
         print("="*50)
 
         query = """
@@ -246,12 +285,34 @@ class AchievementUnlocker:
             print(f"    [{d}/{count}] Discussion #{d} Answer Accepted")
             time.sleep(0.5)
 
-        print("    [Diamond Galaxy Brain Unlocked!]")
+        print("    [Galaxy Brain Unlocked!]")
+
+def prompt_interactive_choice():
+    print("\nSelect which badge(s) you want to unlock:")
+    print("  [1] ⚡ Quickdraw (Instant issue closure)")
+    print("  [2] 🦈 Pull Shark (Merge PRs)")
+    print("  [3] 👥 Pair Extraordinaire (Co-authored PRs)")
+    print("  [4] 🧠 Galaxy Brain (Q&A discussions accepted answers)")
+    print("  [5] 🚀 YOLO (Direct PR merge without review)")
+    print("  [6] 👑 ALL BADGES (Complete Suite up to Diamond/Gold)\n")
+    
+    choice = input("Enter choice [1-6] (default 6): ").strip()
+    mapping = {
+        "1": "quickdraw",
+        "2": "pull-shark",
+        "3": "pair-extraordinaire",
+        "4": "galaxy-brain",
+        "5": "yolo",
+        "6": "all",
+        "": "all"
+    }
+    return mapping.get(choice, "all")
 
 def main():
     parser = argparse.ArgumentParser(description="GitHub Achievements Hunter & Auto-Unlocker")
-    parser.add_argument("--automated", action="store_true", help="Run without prompts (for CI/CD)")
-    parser.add_argument("--level", choices=["standard", "silver", "max"], default="max", help="Level of achievements to unlock")
+    parser.add_argument("--automated", action="store_true", help="Run in non-interactive CI/CD mode")
+    parser.add_argument("--badge", choices=["all", "quickdraw", "pull-shark", "pair-extraordinaire", "galaxy-brain", "yolo"], default=None, help="Specific badge to unlock")
+    parser.add_argument("--tier", choices=["bronze", "silver", "max"], default="max", help="Tier level for multi-tier badges")
     parser.add_argument("--repo", default="github-achievement-sandbox", help="Sandbox repo name")
     args = parser.parse_args()
 
@@ -264,15 +325,41 @@ def main():
     unlocker = AchievementUnlocker(token)
     repo_name = unlocker.setup_sandbox_repo(args.repo)
 
-    pr_count = 25 if args.level == "max" else (16 if args.level == "silver" else 2)
-    qna_count = 32 if args.level == "max" else (8 if args.level == "silver" else 2)
+    # Determine badge selection
+    badge = args.badge
+    if not badge and not args.automated:
+        badge = prompt_interactive_choice()
+    elif not badge:
+        badge = "all"
 
-    unlocker.unlock_quickdraw(repo_name)
-    unlocker.unlock_pull_and_pair(repo_name, pr_count=pr_count)
-    unlocker.unlock_galaxy_brain(repo_name, count=qna_count)
+    # Determine counts based on tier
+    pull_count = 25 if args.tier == "max" else (16 if args.tier == "silver" else 2)
+    pair_count = 24 if args.tier == "max" else (10 if args.tier == "silver" else 1)
+    qna_count = 32 if args.tier == "max" else (8 if args.tier == "silver" else 2)
+
+    print(f"\n🎯 Target Selection: BADGE='{badge.upper()}' | TIER='{args.tier.upper()}'\n")
+
+    if badge == "quickdraw":
+        unlocker.unlock_quickdraw(repo_name)
+    elif badge == "yolo":
+        unlocker.unlock_yolo(repo_name)
+    elif badge == "pull-shark":
+        unlocker.unlock_pull_shark(repo_name, pr_count=pull_count)
+    elif badge == "pair-extraordinaire":
+        unlocker.unlock_pair_extraordinaire(repo_name, pr_count=pair_count)
+    elif badge == "galaxy-brain":
+        unlocker.unlock_galaxy_brain(repo_name, count=qna_count)
+    elif badge == "all":
+        unlocker.unlock_quickdraw(repo_name)
+        unlocker.unlock_yolo(repo_name)
+        unlocker.unlock_pair_extraordinaire(repo_name, pr_count=pair_count)
+        # Note: pair_extraordinaire PRs also count for pull shark!
+        if pull_count > pair_count:
+            unlocker.unlock_pull_shark(repo_name, pr_count=pull_count - pair_count)
+        unlocker.unlock_galaxy_brain(repo_name, count=qna_count)
 
     print("\n" + "="*60)
-    print("🎉 ALL ACHIEVEMENTS TRIGGERED SUCCESSFULLY!")
+    print("🎉 REQUESTED ACHIEVEMENT(S) TRIGGERED SUCCESSFULLY!")
     print("="*60)
     print("GitHub computes achievements asynchronously.")
     print("Check your profile in 15-30 minutes: https://github.com/" + unlocker.user + "?tab=achievements")

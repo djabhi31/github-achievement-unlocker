@@ -27,6 +27,7 @@ on:
       sandbox_repo:
         description: 'Sandbox repo name'
         required: true
+        default: 'my-github-achievements-sandbox'
       coauthor_name:
         description: 'Co-author Name (for Pair Extraordinaire)'
         required: false

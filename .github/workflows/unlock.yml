@@ -27,7 +27,14 @@ on:
       sandbox_repo:
         description: 'Sandbox repo name'
         required: true
-        default: 'my-github-achievements-sandbox'
+      coauthor_name:
+        description: 'Co-author Name (for Pair Extraordinaire)'
+        required: false
+        default: 'The Octocat'
+      coauthor_email:
+        description: 'Co-author GitHub Email (must be verified GitHub email/noreply)'
+        required: false
+        default: '583231+octocat@users.noreply.github.com'
 
 permissions:
   contents: write
@@ -47,8 +54,26 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Check Personal Access Token
+        env:
+          PAT_SET: ${{ secrets.PERSONAL_ACCESS_TOKEN != '' }}
+        run: |
+          if [ "$PAT_SET" != "true" ]; then
+            echo "::error::Repository secret 'PERSONAL_ACCESS_TOKEN' is missing!"
+            echo "GitHub Achievements cannot be unlocked by the default github-actions[bot] token."
+            echo "Create a PAT with 'repo' scope at https://github.com/settings/tokens/new?scopes=repo,workflow"
+            echo "Add it under: Settings -> Secrets and variables -> Actions -> New repository secret (Name: PERSONAL_ACCESS_TOKEN)"
+            exit 1
+          fi
+
       - name: Run Unlocker Engine
         env:
-          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
-          python unlocker.py --automated --badge ${{ github.event.inputs.badge }} --tier ${{ github.event.inputs.tier }} --repo ${{ github.event.inputs.sandbox_repo }}
+          python unlocker.py --automated \
+            --badge "${{ github.event.inputs.badge }}" \
+            --tier "${{ github.event.inputs.tier }}" \
+            --repo "${{ github.event.inputs.sandbox_repo }}" \
+            --coauthor-name "${{ github.event.inputs.coauthor_name }}" \
+            --coauthor-email "${{ github.event.inputs.coauthor_email }}"
+

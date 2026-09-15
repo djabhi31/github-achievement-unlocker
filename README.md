@@ -75,15 +75,18 @@ You have complete flexibility:
 ### 🔹 Method 1: 1-Click GitHub Action *(Zero Installation)*
 
 1. **Fork this repository:** Click the [**Fork** button](https://github.com/djabhi31/github-achievement-unlocker/fork) at the top right.
-2. Navigate to the **Actions** tab in your fork.
-3. Click on **"🏆 1-Click GitHub Achievement Unlocker"** on the left menu.
-4. Click **Run workflow**:
-   - **Select Badge:** Choose `all` OR pick a specific badge (e.g. `galaxy-brain`, `quickdraw`, etc.).
+2. **Add Personal Access Token (PAT):** *(Mandatory)*
+   - Create a GitHub PAT with `repo` and `workflow` scopes at [github.com/settings/tokens/new](https://github.com/settings/tokens/new?scopes=repo,workflow).
+   - In your forked repo, go to **Settings** ➔ **Secrets and variables** ➔ **Actions** ➔ **New repository secret**.
+   - Set Name as `PERSONAL_ACCESS_TOKEN` and paste your token value.
+   > **Note:** GitHub Actions default token (`github-actions[bot]`) cannot unlock user profile badges. A PAT is required so GitHub attributes the activity to your account!
+3. Navigate to the **Actions** tab in your fork.
+4. Click on **"🏆 1-Click GitHub Achievement Unlocker"** on the left menu.
+5. Click **Run workflow**:
+   - **Select Badge:** Choose `all` OR pick a specific badge (e.g. `pull-shark`, `pair-extraordinaire`, `quickdraw`, `yolo`).
    - **Target Tier:** Choose `max` (Diamond/Gold), `silver`, or `bronze`.
-5. Click **Run workflow** and wait ~1–2 minutes!
-6. Check your GitHub profile in 15–30 minutes!
-
-*(Note: For Galaxy Brain and organization discussions, you can optionally add a PAT with `repo` scope under Settings -> Secrets and variables -> Actions as `PERSONAL_ACCESS_TOKEN`).*
+6. Click **Run workflow** and wait ~1–3 minutes!
+7. Check your GitHub profile in 15–30 minutes!
 
 ---
 
@@ -151,6 +154,18 @@ Yes! Use the <code>--badge &lt;name&gt;</code> flag or select the badge from the
 <summary><b>3. How long before badges appear on my profile?</b></summary>
 <br>
 GitHub evaluates achievements asynchronously in background workers. Badges typically appear on your profile within <b>15 to 45 minutes</b>.
+</details>
+
+<details>
+<summary><b>4. Why is Galaxy Brain restricted by GitHub?</b></summary>
+<br>
+GitHub's achievement engine explicitly ignores questions where the author marks their own response as the accepted answer. Furthermore, GitHub has restricted automated Discussion achievements on freshly created sandbox repositories to prevent spam farming. To earn Galaxy Brain, participate in active public discussions where other users accept your helpful answers!
+</details>
+
+<details>
+<summary><b>5. How does Pair Extraordinaire co-author attribution work?</b></summary>
+<br>
+GitHub requires co-authored commits to reference a verified GitHub user email or noreply address (such as <code>583231+octocat@users.noreply.github.com</code>) so GitHub can link the commit to a valid GitHub account. You can also specify your friend's or secondary account's name and email using <code>--coauthor-name</code> and <code>--coauthor-email</code>.
 </details>
 
 ---
